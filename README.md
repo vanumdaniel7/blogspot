@@ -1,2 +1,2 @@
 # blogspot
-A full stack application
+A full MERN stack application with authentication implemented from scratch
