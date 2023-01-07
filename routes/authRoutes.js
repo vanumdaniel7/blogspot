@@ -127,7 +127,7 @@ router.get("/", async (req, res) => {
             title: "Error" 
         });
     }
-})
+});
 
 router.get("/resetemail", async (req, res) => {
     try {
@@ -185,19 +185,6 @@ router.patch("/:token/changepassword", async (req, res) => {
             title: "Error" 
         });
     }
-})
-
-router.post("/:id/signout", (req, res) => {
-    try {
-        destroySession(req);
-        res.send("Signout successful");
-    } catch(err) {
-        res.status(500).json({ 
-            info: "An unexpected error occured, please try again later", 
-            status: "error", 
-            title: "Error" 
-        });
-    }
-})
+});
 
 module.exports = router;
