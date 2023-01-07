@@ -79,6 +79,6 @@ router.get("/:id/blogs/:loadcnt", requireAuthentication, async (req, res) => {
             title: "Error" 
         });
     }
-})
+});
 
 module.exports = router;
