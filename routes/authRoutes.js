@@ -145,7 +145,7 @@ router.get("/resetemail", async (req, res) => {
                 title: "Error"
             })
         }
-        const result = mailer.sendPasswordResetEmail(id, email, name);
+        const result = await mailer.sendPasswordResetEmail(id, email, name);
         res.status(200).json({ 
             info: "Password reset email sent succesfully", 
             status: "success", 
