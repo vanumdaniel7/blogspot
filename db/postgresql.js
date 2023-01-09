@@ -71,7 +71,7 @@ module.exports = {
     getUserDetailsForSearch: async keywords => {
         let result = [];
         for(let keyword of keywords) {
-            const query = `SELECT id, name, email FROM users WHERE UPPER(name) LIKE UPPER('%${keyword}%')`;
+            const query = `SELECT id, name, email FROM users WHERE UPPER(name) LIKE UPPER('%${keyword}%') AND isverified = true`;
             const tempResult = await client.query(query);
             for(let newItem of tempResult.rows) {
                 let flag = true;
