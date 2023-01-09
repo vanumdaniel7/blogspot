@@ -35,6 +35,7 @@ router.post("/", requireAuthentication, async (req, res) => {
         const result = await db.createNewBlog(title, content, tag1, tag2, res.locals.id);
         return res.status(200).json(result);
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
@@ -49,6 +50,7 @@ router.get("/load/:loadcnt", requireAuthentication, async (req, res) => {
         const result = await db.loadMoreBlogs(loadcnt);
         res.status(200).json(result);
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 

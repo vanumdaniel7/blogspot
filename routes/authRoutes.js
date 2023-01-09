@@ -39,6 +39,7 @@ router.post("/", async (req, res) => {
         const result = await auth.createNewUser(name, email, password);
         res.status(200).json(result);
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
@@ -60,6 +61,7 @@ router.post("/login", async (req, res) => {
         }
         res.status(200).json(result);
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
@@ -91,6 +93,7 @@ router.get("/verify/:token", async (req, res) => {
             res.status(200).json(result);
         });
     } catch(err) {
+        console.log(err);
         res.json({ 
             err:"An unexpected error occured, please try again later", 
             status: "error", 
@@ -108,6 +111,7 @@ router.patch("/", requireAuthentication, async (req, res) => {
         const result = await db.updateUserDetails(id, actualName, actualPassword);
         res.status(200).json(result);
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
@@ -121,6 +125,7 @@ router.get("/", async (req, res) => {
         const result = db.getUserDetails(req.session.sessionId);
         return result;
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
@@ -147,6 +152,7 @@ router.get("/resetemail", async (req, res) => {
             title: "Success" 
         }); 
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             info :"An unexpected error occured, please try again later", 
             status: "error", 
@@ -179,6 +185,7 @@ router.patch("/:token/changepassword", async (req, res) => {
             res.status(200).json(result);
         });
     } catch(err) {
+        console.log(err);
         res.json({ 
             err:"An unexpected error occured, please try again later", 
             status: "error", 

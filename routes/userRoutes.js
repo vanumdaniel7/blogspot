@@ -45,6 +45,7 @@ router.get("/", requireAuthentication, async (req, res) => {
         }
         res.status(200).json({ data: [] });
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             info: "An unexpected error occured, please try again later", 
             status: "error", 
@@ -59,7 +60,8 @@ router.get("/:id", requireAuthentication, async (req, res) => {
         const result = await db.getUserDetails(id);
         res.status(200).json(result);
     } catch(err) {
-        res.status(500).json({ 
+        console.log(err);
+        res.status(500).json({
             info: "An unexpected error occured, please try again later", 
             status: "error", 
             title: "Error" 
@@ -73,6 +75,7 @@ router.get("/:id/blogs/:loadcnt", requireAuthentication, async (req, res) => {
         const result = await db.getBlogs(id, loadcnt);
         res.status(200).json(result);
     } catch(err) {
+        console.log(err);
         res.status(500).json({ 
             info: "An unexpected error occured, please try again later", 
             status: "error", 
