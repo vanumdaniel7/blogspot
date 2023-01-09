@@ -11,7 +11,7 @@ module.exports = {
                 if(result1.rows[0].isverified === true) {
                     return { info: "Account with this email already exists, please try with another email", status: "info", title: "Account already exists" };
                 } else {
-                    mailer.sendVerificationLink(result1.rows[0].id, result1.rows[0].email, result1.rows[0].name);
+                    await mailer.sendVerificationLink(result1.rows[0].id, result1.rows[0].email, result1.rows[0].name);
                     return { info: "Account with this email already exists, please click on the verification link sent to your email to continue login", status: "info", title: "Account already exists" };
                 }
             }
@@ -21,7 +21,7 @@ module.exports = {
             const query3 = `SELECT id FROM users WHERE email = '${email}'`;
             const result3 = await db.query(query3);
             const id = parseInt(result3.rows[0].id);
-            mailer.sendVerificationLink(id, email, name);
+            await mailer.sendVerificationLink(id, email, name);
             return { info: "Account successfully created, please click on the verification link sent to your email to continue login", status: "success", title: "Account successfully created" };
         } catch(err) {
             throw err;
@@ -48,7 +48,7 @@ module.exports = {
             if(result.rows.length === 0 || !await bcrypt.compare(password, result.rows[0].password)) {
                 return { info: "Invalid credentials", status: "error", title: "Error" };
             } else if(result.rows[0].isverified === false) {
-                mailer.sendVerificationLink(result.rows[0].id, result.rows[0].email, result.rows[0].name);
+                await mailer.sendVerificationLink(result.rows[0].id, result.rows[0].email, result.rows[0].name);
                 return { info: "User is not verified, but dont worry we have sent you a verification mail to your email", status: "warning", title: "Not verified" };
             }
             result.rows[0].datejoined = new Date(parseInt(result.rows[0].datejoined));
