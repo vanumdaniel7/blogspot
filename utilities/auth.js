@@ -16,13 +16,13 @@ module.exports = {
                 }
             }
             const hashedPassword = await bcrypt.hash(password, 12);
-            const query2 = `INSERT INTO users(name, email, password, isverified, dateJoined) VALUES('${name}', '${email}', '${hashedPassword}', false,'${Date.now()}')`;
+            const query2 = `INSERT INTO users(name, email, password, isverified, dateJoined) VALUES('${name}', '${email}', '${hashedPassword}', true,'${Date.now()}')`;
             const result2 = await db.query(query2);
             const query3 = `SELECT id FROM users WHERE email = '${email}'`;
             const result3 = await db.query(query3);
             const id = parseInt(result3.rows[0].id);
             await mailer.sendVerificationLink(id, email, name);
-            return { info: "Account successfully created, please click on the verification link sent to your email to continue login", status: "success", title: "Account successfully created" };
+            return { info: "Account successfully created, you can now use your credentials to login", status: "success", title: "Account successfully created" };
         } catch(err) {
             throw err;
         }
