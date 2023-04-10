@@ -10,7 +10,7 @@ module.exports = {
             if(err) {
                 return ;
             }
-        });
+        })
     },
     dropblogstable: async() => {
         const query = `DROP TABLE blogs`;
