@@ -8,13 +8,13 @@ const requireAuthentication = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if(err) {
             if(err.name === "TokenExpiredError") {
-                return res.json({
+                return res.status(401).json({
                     status: "warning",
                     title: "Timeout",
                     info: "Token expired, please login again"
                 });
             } else if(err.name === "JsonWebTokenError") {
-                return res.json({
+                return res.status(401).json({
                     status: "error",
                     title: "Authentication error",
                     info: "User is not logged in"
@@ -33,9 +33,9 @@ router.post("/", requireAuthentication, async (req, res) => {
     try {
         let { title, content, tag1, tag2 } = req.body;
         const result = await db.createNewBlog(title, content, tag1, tag2, res.locals.id);
-        return res.json(result);
+        return res.status(200).json(result);
     } catch(err) {
-        res.json({ 
+        res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
             title: "Error" 
@@ -47,9 +47,9 @@ router.get("/load/:loadcnt", requireAuthentication, async (req, res) => {
     try {
         const { loadcnt } = req.params;
         const result = await db.loadMoreBlogs(loadcnt);
-        res.json(result);
+        res.status(200).json(result);
     } catch(err) {
-        res.json({ 
+        res.status(500).json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
             title: "Error" 
