@@ -26,7 +26,8 @@ module.exports = {
                     <a href = "http://${process.env.DOMAIN}/auth/verify/${token}">Verify your email</a>
                   `
         };
-        const result = await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
+        return;
     },
     sendPasswordResetEmail: async (id, email, name) => {
         const token = jwt.sign({ 
@@ -42,6 +43,7 @@ module.exports = {
                     <a href = "http://${process.env.DOMAIN}/auth/reset/${token}">Change your password</a>
                   `
         };
-        const result = await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
+        return;
     }
 }

@@ -8,13 +8,13 @@ const requireAuthentication = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if(err) {
             if(err.name === "TokenExpiredError") {
-                return res.status(401).json({
+                return res.json({
                     status: "warning",
                     title: "Timeout",
                     info: "Token expired, please login again"
                 });
             } else if(err.name === "JsonWebTokenError") {
-                return res.status(401).json({
+                return res.json({
                     status: "error",
                     title: "Authentication error",
                     info: "User is not logged in"
@@ -41,11 +41,11 @@ router.get("/", requireAuthentication, async (req, res) => {
         }
         if(mainKeywords !== []) {
             const result = await db.getUserDetailsForSearch(mainKeywords);
-            return res.status(200).json(result);
+            return res.json(result);
         }
-        res.status(200).json({ data: [] });
+        res.json({ data: [] });
     } catch(err) {
-        res.status(500).json({ 
+        res.json({ 
             info: "An unexpected error occured, please try again later", 
             status: "error", 
             title: "Error" 
@@ -57,9 +57,9 @@ router.get("/:id", requireAuthentication, async (req, res) => {
     try {
         const { id } = req.params;
         const result = await db.getUserDetails(id);
-        res.status(200).json(result);
+        res.json(result);
     } catch(err) {
-        res.status(500).json({ 
+        res.json({ 
             info: "An unexpected error occured, please try again later", 
             status: "error", 
             title: "Error" 
@@ -71,9 +71,9 @@ router.get("/:id/blogs/:loadcnt", requireAuthentication, async (req, res) => {
     try {
         const { id, loadcnt } = req.params;
         const result = await db.getBlogs(id, loadcnt);
-        res.status(200).json(result);
+        res.json(result);
     } catch(err) {
-        res.status(500).json({ 
+        res.json({ 
             info: "An unexpected error occured, please try again later", 
             status: "error", 
             title: "Error" 

@@ -12,13 +12,13 @@ const requireAuthentication = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if(err) {
             if(err.name === "TokenExpiredError") {
-                return res.status(401).json({
+                return res.json({
                     status: "warning",
                     title: "Timeout",
                     info: "Token expired, please login again"
                 });
             } else if(err.name === "JsonWebTokenError") {
-                return res.status(401).json({
+                return res.json({
                     status: "error",
                     title: "Authentication error",
                     info: "User is not logged in"
@@ -37,9 +37,9 @@ router.post("/", async (req, res) => {
     try {
         const { name, email, password } = req.body;
         const result = await auth.createNewUser(name, email, password);
-        res.status(200).json(result);
+        res.json(result);
     } catch(err) {
-        res.status(500).json({ 
+        res.json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
             title: "Error" 
@@ -58,9 +58,9 @@ router.post("/login", async (req, res) => {
             }, process.env.ACCESS_TOKEN_SECRET);
             result.token = token;
         }
-        res.status(200).json(result);
+        res.json(result);
     } catch(err) {
-        res.status(500).json({ 
+        res.json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
             title: "Error" 
@@ -74,13 +74,13 @@ router.get("/verify/:token", async (req, res) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
             if(err) {
                 if(err.name === "TokenExpiredError") {
-                    return res.status(200).json({
+                    return res.json({
                         status: "error",
                         title: "Expired link",
                         info: "Verification link expired, request another verfication link from the login page"
                     });
                 } else if(err.name === "JsonWebTokenError") {
-                    return res.status(200).json({
+                    return res.json({
                         status: "error",
                         title: "Invalid verification link",
                         info: "The verification url is not valid, request another verfication link from the login page"
@@ -88,7 +88,7 @@ router.get("/verify/:token", async (req, res) => {
                 }
             }
             const result = await auth.verifyUser(decoded.data.id);
-            res.status(200).json(result);
+            res.json(result);
         });
     } catch(err) {
         res.json({ 
@@ -106,9 +106,9 @@ router.patch("/", requireAuthentication, async (req, res) => {
         const actualName = name.trim();
         const actualPassword = password.trim();
         const result = await db.updateUserDetails(id, actualName, actualPassword);
-        res.status(200).json(result);
+        res.json(result);
     } catch(err) {
-        res.status(500).json({ 
+        res.json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
             title: "Error" 
@@ -116,40 +116,27 @@ router.patch("/", requireAuthentication, async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
-    try {
-        const result = db.getUserDetails(req.session.sessionId);
-        return result;
-    } catch(err) {
-        res.status(500).json({ 
-            err:"An unexpected error occured, please try again later", 
-            info: "error", 
-            title: "Error" 
-        });
-    }
-})
-
 router.get("/resetemail", async (req, res) => {
     try {
         const { email } = req.query;
         const { id, name } = await db.getUserDetailsFromEmail(email);
         if(id === null) {
-            return res.status(404).json({
+            return res.json({
                 info :"An unexpected error occured, please try again later", 
                 status: "error", 
                 title: "Error"
             })
         }
         const result = mailer.sendPasswordResetEmail(id, email, name);
-        res.status(200).json({ 
+        res.json({ 
             info: "Password reset email sent succesfully", 
             status: "success", 
             title: "Success" 
         }); 
     } catch(err) {
-        res.status(500).json({ 
-            info :"An unexpected error occured, please try again later", 
-            status: "error", 
+        res.json({ 
+            err:"An unexpected error occured, please try again later", 
+            info: "error", 
             title: "Error" 
         });
     }
@@ -161,13 +148,13 @@ router.patch("/:token/changepassword", async (req, res) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
             if(err) {
                 if(err.name === "TokenExpiredError") {
-                    return res.status(200).json({
+                    return res.json({
                         status: "error",
                         title: "Expired link",
                         info: "Verification link expired, request another verfication link from the login page"
                     });
                 } else if(err.name === "JsonWebTokenError") {
-                    return res.status(200).json({
+                    return res.json({
                         status: "error",
                         title: "Invalid verification link",
                         info: "The verification url is not valid, request another verfication link from the login page"
@@ -176,12 +163,12 @@ router.patch("/:token/changepassword", async (req, res) => {
             }
             const { password } = req.query;
             const result = await db.changeUserPassword(decoded.data.id, password);
-            res.status(200).json(result);
+            res.json(result);
         });
     } catch(err) {
         res.json({ 
             err:"An unexpected error occured, please try again later", 
-            status: "error", 
+            info: "error", 
             title: "Error" 
         });
     }
