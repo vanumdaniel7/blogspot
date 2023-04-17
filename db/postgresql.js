@@ -5,12 +5,9 @@ require('dotenv').config({ path: path.join(__dirname, "..", ".env") });
 const client = new pg.Client(process.env.CONNECTION_STRING);
 
 module.exports = {
-    connect: () => {
-        client.connect(err => {
-            if(err) {
-                return ;
-            }
-        })
+    connect: async () => {
+        await client.connect();
+        console.log("Successfully connected to postgreSQL");
     },
     dropblogstable: async() => {
         const query = `DROP TABLE blogs`;
