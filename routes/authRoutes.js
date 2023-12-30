@@ -60,6 +60,7 @@ router.post("/login", async (req, res) => {
         }
         res.json(result);
     } catch(err) {
+        console.log(err);
         res.json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
