@@ -256,6 +256,8 @@ module.exports = {
                     COUNT(*) count
                 FROM
                     blogs
+                WHERE
+                    EXTRACT(YEAR FROM blogDate) = EXTRACT(YEAR FROM CURRENT_DATE)
                 GROUP BY
                     EXTRACT(MONTH FROM blogDate)
                 ORDER BY
