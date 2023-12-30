@@ -174,6 +174,7 @@ module.exports = {
                 isVerified: result.rows[0].isverified
             };
         } catch(err) {
+            console.log(err);
             throw err;
         }
     },
