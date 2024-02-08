@@ -35,7 +35,6 @@ router.post("/", requireAuthentication, async (req, res) => {
         const result = await db.createNewBlog(tags, content, res.locals.userId);
         return res.json(result);
     } catch(err) {
-        console.log(err);
         res.json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
