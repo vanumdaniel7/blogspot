@@ -9,6 +9,7 @@ require("dotenv").config()
 const app = express()
 
 const startApp = async () => {
+    console.log("daniel started")
     app.listen(3000)
     db.connect()
 }
