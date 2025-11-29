@@ -132,6 +132,7 @@ router.get("/resetemail", async (req, res) => {
             title: "Success" 
         })
     } catch (err) {
+        console.log(err)
         res.json({ 
             err:"An unexpected error occured, please try again later", 
             info: "error", 
